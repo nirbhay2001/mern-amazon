@@ -31,16 +31,57 @@ exports.getAllProducts = catchAsyncErrors(async(req,res) => {
 
     const apiFeature = new ApiFeatures(Product.find(),req.query).search()
     .filter()
-    .pagination(resultPerPage);
+    
+    let products = await apiFeature.query;
+
+    let filteredProductsCount = products.length;
+
+    apiFeature.pagination(resultPerPage);
     // console.log(apiFeature);
     // const products = await Product.find();
-    const products = await apiFeature.query;
+    products = await apiFeature.query.clone();
     res.status(200).json({
         success:true,
         products,
-        productsCount
+        productsCount,
+        resultPerPage,
+        filteredProductsCount,
     })
 });
+
+
+// exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
+//   const resultPerPage = 8;
+//   const productsCount = await Product.countDocuments();
+
+//   const apiFeature = new ApiFeatures(Product.find(), req.query)
+//     .search()
+//     .filter()
+//     .pagination(resultPerPage);
+
+//   // let products = await apiFeature.query;
+
+//   // let filteredProductsCount = products.length;
+
+//   // apiFeature.pagination(resultPerPage);
+
+//   const products = await apiFeature.query;
+
+//   res.status(200).json({
+//     success: true,
+//     products,
+//     productsCount,
+//     resultPerPage,
+    
+//   });
+// });
+
+
+
+
+
+
+
 
 
 // Get Product Details or Get Single Product
@@ -170,7 +211,7 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.query.productId);
   
     if (!product) {
-      return next(new ErrorHander("Product not found", 404));
+      return next(new ErrorHandler("Product not found", 404));
     }
   
     const reviews = product.reviews.filter(

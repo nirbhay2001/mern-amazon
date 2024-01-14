@@ -38,9 +38,10 @@ const ProductDetails = () => {
         {loading ? <Loader/> : (
             <Fragment>
       <div className="ProductDetails">
+        <div>
         <Carousel>
           {product.images &&
-            product.images.map((item, i) => (
+            product.images.map((item,i) => (
               <img
                 className="CarouselImage"
                 key={i}
@@ -49,6 +50,7 @@ const ProductDetails = () => {
               />
             ))}
         </Carousel>
+        </div>
 
         <div>
           <div className="detailsBlock-1">
@@ -101,3 +103,14 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+
+
+
+
+
+
+
+
+
+
+
