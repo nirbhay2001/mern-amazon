@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import ReviewCard from "./ReviewCard.js"
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
+import {addItemsToCart} from "../../actions/cartAction";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -25,6 +26,27 @@ const ProductDetails = () => {
     readOnly: true,
     precision: 0.5,
   };
+
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+
+    if(product.stock <= quantity) return;
+    const qty = quantity + 1;
+    setQuantity(qty);
+  }
+
+  const decreaseQuantity = () => {
+    if(1 >= quantity) return;
+
+    const qty = quantity-1;
+    setQuantity(qty);
+  }
+
+  const addToCartHandler = () => {
+    dispatch(addItemsToCart(id, quantity));
+    alert.success("Item Added To Cart");
+  }
 
   useEffect(() => {
     if(error){
@@ -69,11 +91,11 @@ const ProductDetails = () => {
             <h1>{`₹${product.price}`}</h1>
             <div className="detailsBlock-3-1">
               <div className="detailsBlock-3-1-1">
-              <button >-</button>
-                    <input readOnly type="number" value="i" />
-                    <button >+</button>
+              <button onClick={decreaseQuantity} >-</button>
+                    <input readOnly type="number" value={quantity} />
+                    <button onClick={increaseQuantity} >+</button>
               </div>
-              <button>Add to Cart</button>
+              <button onClick={addToCartHandler}>Add to Cart</button>
             </div>
             <p>
                   Status:
