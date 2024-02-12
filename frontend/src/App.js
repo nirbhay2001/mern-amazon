@@ -27,6 +27,8 @@ import Payment from "./component/Cart/Payment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./component/Cart/OrderSuccess";
+import MyOrders from "./component/Order/MyOrders";
+import OrderDetails from "./component/Order/OrderDetails";
 
 
 function App() {
@@ -39,7 +41,13 @@ function App() {
     const { data } = await axios.get("/api/v1/stripeapikey");
 
     setStripeApiKey(data.stripeApiKey);
+    
   }
+
+  
+  const stripePromise = stripeApiKey ? loadStripe(stripeApiKey) : null;
+
+  
 
   useEffect(() => {
     webFont.load({
@@ -102,7 +110,7 @@ function App() {
         </Elements> */}
 
 
-      <Route
+      {/* <Route
           exact
           path="/process/payment"
           element={
@@ -110,9 +118,27 @@ function App() {
               <ProtectedRoute component={Payment} />
             </Elements>
           }
+        /> */}
+
+
+        <Route
+          exact
+          path="/process/payment"
+          element={
+            <Elements stripe={stripePromise}>
+              <ProtectedRoute component={Payment} />
+            </Elements>
+          }
         />
+
           
       <Route exact path="/success" element={<ProtectedRoute component={OrderSuccess}/>} />
+
+      <Route exact path="/orders" element={<ProtectedRoute component={MyOrders}/>} />
+
+      <Route exact path="/order/:id" element={<ProtectedRoute component={OrderDetails}/>} />
+
+
 
       </Routes>
       <Footer />
@@ -121,3 +147,5 @@ function App() {
 }
 
 export default App;
+
+
