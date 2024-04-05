@@ -7,12 +7,13 @@ const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
 
+
 const errorMiddleware = require("./middleware/error");
 
 // config
 dotenv.config({path:"Backend/config/config.env"})
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}));
