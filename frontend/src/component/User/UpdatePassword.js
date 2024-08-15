@@ -19,8 +19,11 @@ const UpdatePassword = () => {
   const { error, isUpdated, loading } = useSelector((state) => state.profile);
 
   const [oldPassword, setOldPassword] = useState("");
+  console.log(oldPassword);
   const [newPassword, setNewPassword] = useState("");
+  console.log(newPassword);
   const [confirmPassword, setConfirmPassword] = useState("");
+  console.log(confirmPassword);
 
   const updatePasswordSubmit = (e) => {
     e.preventDefault();

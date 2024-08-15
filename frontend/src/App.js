@@ -41,6 +41,7 @@ import ProductReviews from "./component/Admin/ProductReviews";
 import Contact from "./component/layout/Contact/Contact";
 import About from "./component/layout/About/About";
 import NotFound from "./component/layout/Not Found/NotFound";
+import {baseUrl} from "./Urls";
 
 
 function App() {
@@ -49,12 +50,23 @@ function App() {
 
   const [stripeApiKey, setStripeApiKey] = useState("");
 
-  async function getStripeApiKey() {
-    const { data } = await axios.get("/api/v1/stripeapikey");
+  // async function getStripeApiKey() {
+  //   const { data } = await axios.get("/api/v1/stripeapikey");
 
-    setStripeApiKey(data.stripeApiKey);
+  //   setStripeApiKey(data.stripeApiKey);
     
+  // }
+
+  async function getStripeApiKey() {
+    try {
+        const { data } = await axios.get(`${baseUrl}/api/v1/stripeapikey`);
+        setStripeApiKey(data.stripeApiKey);
+    } catch (error) {
+        console.error('Error fetching Stripe API key:', error.response ? error.response.data : error.message);
+    }
   }
+
+  // console.log(stripeApiKey);
 
   
   const stripePromise = stripeApiKey ? loadStripe(stripeApiKey) : null;
@@ -78,6 +90,7 @@ function App() {
       {isAuthenticated && <UserOptions user={user} />}
       <Routes>
         <Route exact path="/" element={<Home />} />
+        {/* {isAuthenticated && <UserOptions user={user} />} */}
         <Route exact path="/product/:id" element={<ProductDetails />} />
         <Route exact path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />

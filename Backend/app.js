@@ -13,7 +13,7 @@ const errorMiddleware = require("./middleware/error");
 // config
 dotenv.config({path:"Backend/config/config.env"})
 
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -34,3 +34,9 @@ app.use("/api/v1", payment);
 app.use(errorMiddleware);
 
 module.exports = app;
+
+
+
+// "proxy": "http://192.168.56.1:4000"
+
+// FRONTEND_URL = "http://localhost:3000"

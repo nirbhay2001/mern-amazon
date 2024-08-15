@@ -4,6 +4,7 @@ const User = require("../models/userModel");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const bcrypt = require('bcryptjs');
 const cloudinary = require("cloudinary");
 
 // Register a User
@@ -173,7 +174,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 // update User password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select("+password"); // select() method ke use se es bar password bhi select ho jayega
+  const user = await User.findById(req.user.id).select("+password");
 
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
@@ -191,6 +192,14 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
+
+
+
+
+
+
+
+
 
 // update User Profile
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
