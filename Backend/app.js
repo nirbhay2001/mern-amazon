@@ -18,7 +18,7 @@ const errorMiddleware = require("./middleware/error");
 
 // app.use(cors());
 app.use(cors({
-    origin:["http://localhost:3000"],
+    origin:["http://localhost:3000","https://fullstack-ecommerce-allfea.vercel.app"],
     methods:['POST','GET','HEAD','PUT','DELETE'],
     credentials: true
 }))
