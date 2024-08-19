@@ -4,18 +4,17 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies;
-
+  const token = req.cookies.token;
+  // console.log("auth  token",token);
   if (!token) {
     return next(new ErrorHander("Please Login to access this resource", 401));
   }
-
-  const decodedData = jwt.verify(token, process.env.JWT_SECRET); // decodedData me user ka id aa jayega kyuki Token generate karte time id ka hi use huaa tha
-
-  req.user = await User.findById(decodedData.id); // jab req.user me user ko save karte hai to jab tak user login rahega to us user ka data access kar sakte hai
-
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);  
+  // console.log("decode data",decodedData)
+  req.user = await User.findById(decodedData.id);  
   next();
 });
+
 
 exports.authorizeRoles = (...roles) => {
   return (req, res, next) => {
@@ -27,7 +26,6 @@ exports.authorizeRoles = (...roles) => {
         )
       );
     }
-
     next();
   };
 };

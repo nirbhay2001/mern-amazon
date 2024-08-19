@@ -5,25 +5,27 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
-
-
-
-const errorMiddleware = require("./middleware/error");
-
 // config
-dotenv.config({path:"Backend/config/config.env"})
-
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(fileUpload());
+dotenv.config({path:"./config/config.env"})
 
 // Route Imports
 const product = require("./routes/productRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute");
 const payment = require("./routes/paymentRoute");
+
+const errorMiddleware = require("./middleware/error");
+
+// app.use(cors());
+app.use(cors({
+    origin:["http://localhost:3000"],
+    methods:['POST','GET','HEAD','PUT','DELETE'],
+    credentials: true
+}))
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(fileUpload());
 
 app.use("/api/v1", product);
 app.use("/api/v1",user);

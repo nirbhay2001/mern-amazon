@@ -11,14 +11,14 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-
-import axios from "axios";
 import "./Payment.css";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import EventIcon from "@material-ui/icons/Event";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { createOrder, clearErrors } from "../../actions/orderAction";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
+
 
 const Payment = () => {
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -54,21 +54,10 @@ const Payment = () => {
     payBtn.current.disabled = true;
 
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const { data } = await axios.post(
-        "/api/v1/payment/process",
-        paymentData,
-        config
-      );
+      const {data} = await axiosInstance.post("/api/v1/payment/process",paymentData);
 
-      const client_secret = data.client_secret;
-
+      const client_secret = data.client_secret 
       if (!stripe || !elements) return;
-
       const result = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
           card: elements.getElement(CardNumberElement),

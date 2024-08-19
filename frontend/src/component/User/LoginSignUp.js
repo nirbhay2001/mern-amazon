@@ -35,7 +35,6 @@ const LoginSignUp = () => {
     });
 
     const { name, email, password } = user;
-
     const [avatar, setAvatar] = useState("/Profile.png");
     const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 

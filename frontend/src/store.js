@@ -30,8 +30,6 @@ import {
   orderReducer,
 } from "./reducers/orderReducer";
 
-
-
 const reducer = combineReducers({
   products: productsReducer,
   productDetails: productDetailsReducer,
