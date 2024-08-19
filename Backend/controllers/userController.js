@@ -125,18 +125,36 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+// exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.user.id);
+//     console.log(user);
+//     res.status(200).json({
+//       success: true,
+//       user,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
     console.log(user);
     res.status(200).json({
       success: true,
       user,
     });
   } catch (error) {
+    console.error('Error fetching user details:', error);
     next(error);
   }
 });
+
 
 // update User password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
